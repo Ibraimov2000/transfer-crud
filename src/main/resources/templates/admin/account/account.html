@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Аккаунт</title>
+<style>
+
+    body {
+        margin: 40px;
+        margin-left: 70px;
+    }
+
+    table {
+        font-family: Arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid lightseagreen;
+        text-align: center;
+        padding: 10px;
+    }
+
+    tr:nth-child(even) {
+        background-color: lightblue;
+    }
+
+    .b1{
+        background: red;
+        color: white;
+        font-size: 15pt;
+        border-radius: 4px;
+    }
+    .b2{
+        background: navy;
+        color: white;
+        font-size: 15pt;
+        border-radius: 4px;
+    }
+
+    .b3 {
+        margin-top: 20px;
+        border-radius: 6px;
+    }
+
+    .div1 {
+        font-weight: bold;
+        font-size: 18px;
+        color: darkslategray;
+
+    }
+
+    span {
+        font-size: 15px;
+        font-weight: bolder;
+        color: #000220;
+    }
+
+</style>
+</head>
+<body>
+
+<h2>Аккаунт</h2>
+<table>
+    <tr>
+        <td>
+            <div class="div1">Имя:</div>
+            <span th:text="${account.name}"></span>
+            <br>
+            <div class="div1">Фамилия:</div>
+            <span th:text="${account.surname}"></span>
+            <br>
+            <div class="div1">Номер:</div>
+            <span th:text="${account.number}"></span>
+            <br>
+        </td>
+        <td>
+            <form th:method="GET" th:action="@{/account/{id}/delete(id=${account.id})}">
+              <input type="submit" class="b1"  value="Удалить">
+            </form>
+            <br/>
+
+            <form th:method="GET" th:action="@{/account/{id}/edit(id=${account.id})}">
+              <input type="submit" class="b2" value="Редактировать">
+            </form>
+            <br/>
+        </td>
+    </tr>
+</table>
+
+<form th:method="GET" th:action="@{/}">
+  <input type="submit" class="b2 b3" value="Главная">
+</form>
+</body>
+</html>

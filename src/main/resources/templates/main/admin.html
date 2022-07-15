@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ГЛАВНАЯ</title>
+</head>
+<body>
+
+    <style>
+
+        table {
+            margin: auto;
+        }
+
+        .b2 {
+            margin-top: 30px;
+            margin-left: 450px;
+            background: navy;
+            color: white;
+            font-size: 15pt;
+            border-radius: 4px;
+        }
+
+        td {
+            margin: 20px;
+            font-weight: 600;
+            font-family: arial, sans-serif;
+            padding: 20px;
+            border: 1px solid lightseagreen;
+            border-collapse: collapse;
+        }
+    </style>
+
+    <table>
+        <tr>
+            <td><a th:href="@{/account/accounts}">КЛИЕНТЫ</a></td>
+            <td><a th:href="@{/user/users}">ПОЛЬЗОВАТЕЛИ</a></td>
+            <td><a th:href="@{/cash/cashes}">КАССЫ</a></td>
+        </tr>
+        <tr></tr>
+        <tr></tr>
+        <tr colspan="5px">
+            <td><a th:href="@{/transfer/add}">ПЕРЕВОДИТЬ ДЕНЬГИ</a></td>
+            <td><a th:href="@{/transfer/getTransfer}">ПОЛУЧИТЬ ДЕНЬГИ</a></td>
+        </tr>
+    </table>
+
+
+    <form th:method="GET" th:action="@{/}">
+        <input type="submit" class="b2" th:class="b2" value="Главная">
+    </form>
+</body>
+</html>

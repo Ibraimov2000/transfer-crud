@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактировать</title>
+<style>
+  .b2{
+    background: navy;
+    color: white;
+    font-size: 15pt;
+    border-radius: 4px;
+  }
+  label{
+    font-size: 18px;
+  }
+
+  form {
+    margin-top: 30px;
+    margin-left: 30px;
+    font-weight: 600;
+  }
+
+  input {
+    align-self: flex-end;
+  }
+
+</style>
+</head>
+<body>
+<form th:method="POST" th:action="@{/account/{id}/update(id=${account.id})}" th:object="${account}">
+  <strong><label for="name">Введите имя: </label></strong>
+  <input type="text" th:field="*{name}" id="name"/>
+  <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+  <br/>
+  <label for="name">Введите фамилия: </label>
+  <input type="text" th:field="*{surname}" id="surname"/>
+  <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname Error</div>
+  <br/>
+  <label for="name">Введите номер: </label>
+  <input type="text" th:field="*{number}" id="number"/>
+  <div style="color:red" th:if="${#fields.hasErrors('number')}" th:errors="*{number}">Number Error</div>
+  <br/>
+
+  <input type="submit" class="b2"  value="Обновить"/>
+</form>
+<br>
+<form th:method="GET" th:action="@{/}">
+  <input type="submit" class="b2" value="Главная">
+</form>
+<br/>
+</body>
+</html>

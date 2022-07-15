@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Аккаунты</title>
+<style>
+  table {
+    font-family: Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid lightseagreen;
+    text-align: center;
+    padding: 10px;
+  }
+
+  tr:nth-child(even) {
+    background-color: lightblue;
+  }
+  .b1{
+    margin-top: 5px;
+    background: red;
+    color: white;
+    font-size: 15pt;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  .b2{
+    background: navy;
+    color: white;
+    font-size: 15pt;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  .b3{
+    background: navy;
+    color: white;
+    font-size: 14pt;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+
+  audio {
+    margin: 0;
+    width: 220px;
+    height: 36px;
+  }
+
+  .header {
+    font-weight: bolder;
+  }
+
+  form {
+    margin-top: 20px;
+    display: inline-block;
+  }
+</style>
+
+
+</head>
+<body>
+<h2>Аккаунты</h2>
+<table>
+  <tr class="header">
+    <td>Id</td>
+    <td>Имя</td>
+    <td>Фамилия</td>
+    <td>Номер</td>
+    <td>Уникальный код</td>
+    <td>Действия</td>
+  </tr>
+
+  <tr th:each="account:${accounts}">
+    <td><p th:text="${account.id}"></p> </td>
+    <td><a th:href="@{/account/{id}(id=${account.id})}" th:text="${account.name}"><p th:text="${account.name}"></p></a></td>
+    <td><p th:text="${account.surname}"></p></td>
+    <td><p th:text="${account.number}"></p></td>
+    <td><p th:text="${account.unicCode}"></p></td>
+    <td>
+      <form th:method="GET" th:action="@{/account/{id}/edit(id=${account.id})}">
+        <input type="submit" class="b2" value="Редактировать">
+      </form>
+      <form th:method="GET" th:action="@{/account/{id}/delete(id=${account.id})}">
+        <input type="submit" class="b1" value="Удалить">
+      </form>
+
+    </td>
+  </tr>
+</table>
+<br>
+<form th:method="GET" th:action="@{/account/add}">
+  <input type="submit" class="b3" value="Создать новый аккаунт">
+</form>
+<br/>
+<br>
+<form th:method="GET" th:action="@{/}">
+  <input type="submit" class="b2 b3" value="Главная">
+</form>
+<br/>
+</body>
+</html>

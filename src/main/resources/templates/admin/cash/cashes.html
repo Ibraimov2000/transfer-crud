@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Кассы</title>
+<style>
+  table {
+    font-family: Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid lightseagreen;
+    text-align: center;
+    padding: 10px;
+  }
+
+  tr:nth-child(even) {
+    background-color: lightblue;
+  }
+  .b1{
+    margin-top: 5px;
+    background: red;
+    color: white;
+    font-size: 15pt;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  .b2{
+    background: navy;
+    color: white;
+    font-size: 15pt;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  .b3{
+    background: navy;
+    color: white;
+    font-size: 14pt;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+
+  audio {
+    margin: 0;
+    width: 220px;
+    height: 36px;
+  }
+
+  .header {
+    font-weight: bolder;
+  }
+
+  form {
+    margin-top: 20px;
+    display: inline-block;
+  }
+</style>
+
+
+</head>
+<body>
+<h2>Кассы</h2>
+<table>
+  <tr class="header">
+    <td>Id</td>
+    <td>Баланс</td>
+    <td>Действия</td>
+  </tr>
+
+  <tr th:each="cash:${cashes}">
+    <td><p th:text="${cash.id}"></p> </td>
+    <td><a th:href="@{/cash/{id}(id=${cash.id})}" th:text="${cash.balance}"><p th:text="${cash.balance}"></p></a></td>
+    <td>
+
+      <form th:method="GET" th:action="@{/cash/{id}/edit(id=${cash.id})}">
+        <input type="submit" class="b2" value="Редактировать">
+      </form>
+      <form th:method="GET" th:action="@{/cash/{id}/delete(id=${cash.id})}">
+        <input type="submit" class="b1" value="Удалить">
+      </form>
+
+    </td>
+  </tr>
+</table>
+<br>
+<form th:method="GET" th:action="@{/cash/add}">
+  <input type="submit" class="b3" value="Создать кассу">
+</form>
+<br/>
+<br>
+<form th:method="GET" th:action="@{/}">
+  <input type="submit" class="b2 b3" value="Главная">
+</form>
+<br/>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать кассу</title>
+<style>
+  .b2{
+    background: navy;
+    color: white;
+    font-size: 15pt;
+    border-radius: 4px;
+  }
+
+  label{
+    font-size: 18px;
+    margin-top: 20px;
+  }
+
+  input {
+    margin-top: 10px;
+  }
+
+  form {
+    margin-top: 30px;
+    margin-left: 30px;
+    font-weight: 600;
+  }
+
+
+</style>
+
+
+</head>
+<body>
+<form th:method="POST" th:action="@{/cash/addCash}" th:object="${cash}">
+    <label for="balance">Введите баланс: </label>
+    <input type="text" th:field="*{balance}" id="balance"/>
+    <div style="color:red" th:if="${#fields.hasErrors('balance')}" th:errors="*{balance}">Balance Error</div>
+    <br/>
+
+    <input type="submit" class="b2" value="Создать"/>
+</form>
+<br>
+<form th:method="GET" th:action="@{/}">
+    <input type="submit" th:class="b2" value="Главная">
+</form>
+<br/>
+</body>
+</html>

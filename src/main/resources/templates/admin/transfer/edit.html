@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактировать</title>
+<style>
+  .b2{
+    background: navy;
+    color: white;
+    font-size: 15pt;
+    border-radius: 4px;
+  }
+  label{
+    font-size: 18px;
+  }
+
+  form {
+    margin-top: 30px;
+    margin-left: 30px;
+    font-weight: 600;
+  }
+
+  input {
+    align-self: flex-end;
+  }
+
+</style>
+</head>
+<body>
+<form th:method="POST" th:action="@{/transfer/{id}/update(id=${transfer.id})}" th:object="${transfer}">
+  <strong><label for="amount">Введите сумму: </label></strong>
+  <input type="text" th:field="*{amount}" id="amount"/>
+  <div style="color:red" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Amount Error</div>
+  <br/>
+  <strong><label for="comment">Введите комментарий: </label></strong>
+  <input type="text" th:field="*{comment}" id="comment"/>
+  <div style="color:red" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">Comment Error</div>
+  <br/>
+
+  <label>Выберите отправителя: </label>
+  <select th:field="*{transfer.sender}">
+    <th:block th:each="sender:${accounts}">
+      <option th:value="${sender.id}"
+              th:text="${sender.name}">
+      </option>
+    </th:block>
+  </select>
+  <br/>
+
+  <label>Выберите получателя: </label>
+  <select th:field="*{transfer.recipient}">
+    <th:block th:each="recipient:${accounts}">
+      <option th:value="${recipient.id}"
+              th:text="${recipient.name}">
+      </option>
+    </th:block>
+  </select>
+
+  <input type="submit" class="b2"  value="Обновить"/>
+</form>
+<br>
+<form th:method="GET" th:action="@{/}">
+  <input type="submit" class="b2" value="Главная">
+</form>
+<br/>
+</body>
+</html>

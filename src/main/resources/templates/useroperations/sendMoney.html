@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Переводить деньги</title>
+    <style>
+        .b2 {
+            background: navy;
+            color: white;
+            font-size: 15pt;
+            border-radius: 4px;
+        }
+
+        label {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        input {
+            margin-top: 10px;
+        }
+
+        form {
+            margin-top: 30px;
+            margin-left: 30px;
+            font-weight: 600;
+        }
+    </style>
+
+</head>
+<body>
+<form th:method="POST" th:action="@{/transfer/addTransfer}">
+
+    <label>Выберите отправителя: </label>
+    <select th:field="*{transfer.sender}">
+        <th:block th:each="sender:${accounts}">
+            <option th:value="${sender.id}"
+                    th:text="${sender.name}">
+            </option>
+        </th:block>
+    </select>
+    <br/>
+
+    <label>Выберите получателя: </label>
+    <select th:field="*{transfer.recipient}">
+        <th:block th:each="recipient:${accounts}">
+            <option th:value="${recipient.id}"
+                    th:text="${recipient.name}">
+            </option>
+        </th:block>
+    </select>
+
+    <label for="amount">Введите сумму: </label>
+    <input type="number" th:field="*{transfer.amount}" id="amount"/>
+    <br/>
+
+    <label for="comment">Введите комментарий: </label>
+    <input type="text" th:field="*{transfer.comment}" id="comment"/>
+    <br/>
+
+    <input type="submit" class="b2" value="Создать"/>
+</form>
+<br>
+<form th:method="GET" th:action="@{/}">
+    <input type="submit" th:class="b2" value="Главная">
+</form>
+<br/>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Переводы</title>
+<style>
+  table {
+    font-family: Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid lightseagreen;
+    text-align: center;
+    padding: 10px;
+  }
+
+  tr:nth-child(even) {
+    background-color: lightblue;
+  }
+  .b1{
+    margin-top: 5px;
+    background: red;
+    color: white;
+    font-size: 15pt;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  .b2{
+    background: navy;
+    color: white;
+    font-size: 15pt;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  .b3{
+    background: navy;
+    color: white;
+    font-size: 14pt;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+
+  audio {
+    margin: 0;
+    width: 220px;
+    height: 36px;
+  }
+
+  .header {
+    font-weight: bolder;
+  }
+
+  form {
+    margin-top: 20px;
+    display: inline-block;
+  }
+</style>
+
+
+</head>
+<body>
+<h1 style="text-align: center; font-family: Cambria">Переводы</h1>
+
+<br/><br/>
+<form th:action="@{/transfer/transfers}">
+  Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+  &nbsp;
+  <input type="submit" value="Search" />
+  &nbsp;
+  <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+</form>
+<br/><br/>
+
+<table>
+  <tr class="header">
+    <td>Id</td>
+    <td>Отправитель</td>
+    <td>Получатель</td>
+    <td>Сумма</td>
+    <td>Валюта</td>
+    <td>Статус</td>
+    <td>Код</td>
+    <td>Комментарий</td>
+    <td>Действия</td>
+  </tr>
+
+  <tr th:each="transfer:${transfers}">
+    <td><a th:href="@{/transfer/{id}(id=${transfer.id})}" th:text="${transfer.id}"><p th:text="${transfer.id}"></p></a></td>
+    <td><p th:text="${transfer.sender.getName()}"></p></td>
+    <td><p th:text="${transfer.recipient.getName()}"></p></td>
+    <td><p th:text="${transfer.amount}"></p></td>
+    <td><p th:text="${transfer.currency.getName()}"></p></td>
+    <td><p th:text="${transfer.status}"></p></td>
+    <td><p th:text="${transfer.unicCode}"></p></td>
+    <td><p th:text="${transfer.comment}"></p></td>
+    <td>
+
+      <form th:method="GET" th:action="@{/transfer/{id}/edit(id=${transfer.id})}">
+        <input type="submit" class="b2" value="Редактировать">
+      </form>
+      <form th:method="GET" th:action="@{/transfer/{id}/delete(id=${transfer.id})}">
+        <input type="submit" class="b1" value="Удалить">
+      </form>
+    </td>
+  </tr>
+</table>
+<br>
+<form th:method="GET" th:action="@{/transfer/add}">
+  <input type="submit" class="b3" value="Создать">
+</form>
+<br>
+<br>
+
+
+<form th:method="GET" th:action="@{/}">
+  <input type="submit" class="b2 b3" value="Главная">
+</form>
+<br/>
+
+<script type="text/javascript">
+  function clearSearch() {
+    window.location = "[[@{/transfer/transfers}]]";
+  }
+</script>
+</body>
+</html>
