@@ -1,0 +1,1 @@
+web: java -jar target/transfer-crud-1.0.jar
