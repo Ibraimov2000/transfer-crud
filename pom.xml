@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>cbk</artifactId>
+    <artifactId>transfer-crud</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cbk</name>
+    <name>transfer-crud</name>
     <description>cbk</description>
     <properties>
         <java.version>11</java.version>
