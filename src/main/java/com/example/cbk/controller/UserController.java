@@ -55,7 +55,7 @@ public class UserController {
         }
         user.setRoles(Set.of(role));
         userService.createUser(user);
-        return "redirect:/admin/user/users";
+        return "redirect:/user/users";
     }
 
     @GetMapping("/{id}/delete")
@@ -67,6 +67,7 @@ public class UserController {
     @GetMapping("/{id}/edit")
     public String editUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getById(id));
+        model.addAttribute("roles", roleService.getAllRoles());
         return "/admin/user/edit";
     }
 

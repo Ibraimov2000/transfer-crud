@@ -36,6 +36,15 @@
   <input type="text" th:field="*{password}" id="password"/>
   <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
   <br/>
+  <label>Выберите роль: </label>
+  <select th:field="*{roles}">
+    <th:block th:each="role:${roles}">
+      <option th:value="${role.id}"
+              th:text="${role.name}">
+      </option>
+    </th:block>
+  </select>
+  <br/>
   <input type="submit" class="b2"  value="Обновить"/>
 </form>
 <br>
