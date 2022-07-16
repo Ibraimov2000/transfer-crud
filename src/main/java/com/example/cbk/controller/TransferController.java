@@ -40,13 +40,13 @@ public class TransferController {
     public String getTransfers(Model model, @Param("keyword") String keyword) {
         List<Transfer> transfers = transferService.search(keyword);
         model.addAttribute("transfers", transfers);
-        return "/admin/transfer/transfers";
+        return "admin/transfer/transfers";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("transfer", transferService.getById(id));
-        return "/admin/transfer/transfer";
+        return "admin/transfer/transfer";
     }
 
     @GetMapping("/add")
@@ -56,13 +56,13 @@ public class TransferController {
         model.addAttribute("accounts", accounts);
         model.addAttribute("currencies", currencyService.getAll());
         model.addAttribute("cashes", cashService.getAll());
-        return "/admin/transfer/add";
+        return "admin/transfer/add";
     }
 
     @PostMapping("/addTransfer")
     public String addTransfer(@ModelAttribute("transfer") @Valid Transfer transfer, @NotNull BindingResult bindingResult) {
         if(bindingResult.hasErrors() || (transfer.getAmount() > transfer.getCash().getBalance())) {
-            return "/admin/transfer/add";
+            return "admin/transfer/add";
         }
 
         transfer.setStatus("СОЗДАН");
@@ -83,13 +83,13 @@ public class TransferController {
         model.addAttribute("accounts", accounts);
         model.addAttribute("currencies", currencyService.getAll());
         model.addAttribute("cashes", cashService.getAll());
-        return "/admin/transfer/getTransfer";
+        return "admin/transfer/getTransfer";
     }
 
     @PostMapping("/getTransfer")
     public String getTransfer(@ModelAttribute("transfer") @Valid Transfer transfer, @NotNull BindingResult bindingResult) {
         if(bindingResult.hasErrors() || (transfer.getAmount() > transfer.getCash().getBalance())) {
-            return "/admin/transfer/add";
+            return "admin/transfer/add";
         }
 
         Account account = accountService.getById(transfer.getSender().getId());
@@ -113,7 +113,7 @@ public class TransferController {
                 transferService.update(transfer1, account.getTransferId());
                 return "redirect:/";
         } else {
-            return "/admin/transfer/add";
+            return "admin/transfer/add";
         }
     }
 
@@ -126,13 +126,13 @@ public class TransferController {
     @GetMapping("/{id}/edit")
     public String editTransfer(@PathVariable("id") Long id, Model model) {
         model.addAttribute("transfer", transferService.getById(id));
-        return "/admin/cash/edit";
+        return "admin/cash/edit";
     }
 
     @PostMapping("/{id}/update")
     public String update(@ModelAttribute("transfer") @Valid Transfer transfer, BindingResult bindingResult, @PathVariable("id") Long id) {
         if(bindingResult.hasErrors()){
-            return "/admin/transfer/edit";
+            return "admin/transfer/edit";
         }
         transferService.update(transfer, id);
         return "redirect:/transfer/transfers";

@@ -31,13 +31,13 @@ public class UserController {
     @GetMapping("/users")
     public String printUsers(Model model) {
         model.addAttribute("user", userService.getAllUsers());
-        return "/admin/user/users";
+        return "admin/user/users";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getById(id));
-        return "/admin/user/user";
+        return "admin/user/user";
     }
 
     @GetMapping("/add")
@@ -45,13 +45,13 @@ public class UserController {
         model.addAttribute("user", new User());
         List<Role> roles = roleService.getAllRoles();
         model.addAttribute("roles", roles);
-        return "/admin/user/add";
+        return "admin/user/add";
     }
 
     @PostMapping("/addUser")
     public String addUser(@ModelAttribute("user") @Valid User user, @ModelAttribute Role role, @NotNull BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return "/admin/user/add";
+            return "admin/user/add";
         }
         user.setRoles(Set.of(role));
         userService.createUser(user);
@@ -68,13 +68,13 @@ public class UserController {
     public String editUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getById(id));
         model.addAttribute("roles", roleService.getAllRoles());
-        return "/admin/user/edit";
+        return "admin/user/edit";
     }
 
     @PostMapping("/{id}/update")
     public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @PathVariable("id") Long id) {
         if(bindingResult.hasErrors()){
-            return "/admin/user/edit";
+            return "admin/user/edit";
         }
         userService.update(user, id);
         return "redirect:/user/users";

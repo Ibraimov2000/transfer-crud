@@ -28,25 +28,25 @@ public class AccountController {
     @GetMapping("/accounts")
     public String getAccounts(Model model) {
         model.addAttribute("accounts", accountService.getAll());
-        return "/admin/account/accounts";
+        return "admin/account/accounts";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("account", accountService.getById(id));
-        return "/admin/account/account";
+        return "admin/account/account";
     }
 
     @GetMapping("/add")
     public String addUserFrom(Model model) {
         model.addAttribute("account", new Account());
-        return "/admin/account/add";
+        return "admin/account/add";
     }
 
     @PostMapping("/addAccount")
     public String addAccount(@ModelAttribute("account") @Valid Account account, @NotNull BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return "/admin/account/add";
+            return "admin/account/add";
         }
         accountService.create(account);
         return "redirect:/account/accounts";
@@ -61,13 +61,13 @@ public class AccountController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("account", accountService.getById(id));
-        return "/admin/account/edit";
+        return "admin/account/edit";
     }
 
     @PostMapping("/{id}/update")
     public String update(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, @PathVariable("id") Long id) {
         if(bindingResult.hasErrors()){
-            return "/admin/account/edit";
+            return "admin/account/edit";
         }
         accountService.update(account, id);
         return "redirect:/account/accounts";

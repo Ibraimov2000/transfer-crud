@@ -25,25 +25,25 @@ public class CashController {
     @GetMapping("/cashes")
     public String getCashes(Model model) {
         model.addAttribute("cashes", cashService.getAll());
-        return "/admin/cash/cashes";
+        return "admin/cash/cashes";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("cash", cashService.getById(id));
-        return "/admin/cash/cash";
+        return "admin/cash/cash";
     }
 
     @GetMapping("/add")
     public String addCashFrom(Model model) {
         model.addAttribute("cash", new Cash());
-        return "/admin/cash/add";
+        return "admin/cash/add";
     }
 
     @PostMapping("/addCash")
     public String addCash(@ModelAttribute("cash") @Valid Cash cash, @NotNull BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return "/admin/cash/add";
+            return "admin/cash/add";
         }
         cashService.create(cash);
         return "redirect:/cash/cashes";
@@ -58,13 +58,13 @@ public class CashController {
     @GetMapping("/{id}/edit")
     public String editCash(@PathVariable("id") Long id, Model model) {
         model.addAttribute("cash", cashService.getById(id));
-        return "/admin/cash/edit";
+        return "admin/cash/edit";
     }
 
     @PostMapping(value = "/{id}/update")
     public String update(@ModelAttribute("cash") @Valid Cash cash, BindingResult bindingResult, @PathVariable("id") Long id) {
         if(bindingResult.hasErrors()){
-            return "/admin/cash/edit";
+            return "admin/cash/edit";
         }
         cashService.update(cash, id);
         return "redirect:/cash/cashes";

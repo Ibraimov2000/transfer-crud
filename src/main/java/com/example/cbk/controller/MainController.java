@@ -24,7 +24,7 @@ public class MainController {
 
     @GetMapping("/")
     public String getAdminPage() {
-        return "/main/admin";
+        return "main/admin";
     }
 
 }
