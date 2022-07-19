@@ -48,7 +48,7 @@
     <select th:field="*{transfer.sender}">
         <th:block th:each="sender:${accounts}">
             <option th:value="${sender.id}"
-                    th:text="${sender.name}">
+                    th:text="${sender.username}">
             </option>
         </th:block>
     </select>
@@ -58,7 +58,7 @@
     <select th:field="*{transfer.recipient}">
         <th:block th:each="recipient:${accounts}">
             <option th:value="${recipient.id}"
-                    th:text="${recipient.name}">
+                    th:text="${recipient.username}">
             </option>
         </th:block>
     </select>
@@ -82,7 +82,7 @@
     <input type="text" th:field="*{transfer.comment}" id="comment"/>
     <br/>
     <br/>
-    <input type="submit" class="b2" value="Создать"/>
+    <input type="submit" class="b2" value="Переводить"/>
 </form>
 <br>
 <form th:method="GET" th:action="@{/}">

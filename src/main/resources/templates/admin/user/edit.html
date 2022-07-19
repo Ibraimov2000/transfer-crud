@@ -32,6 +32,14 @@
   <input type="text" th:field="*{username}" id="username"/>
   <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
   <br/>
+  <label for="surname">Введите фамилия: </label>
+  <input type="text" th:field="*{surname}" id="surname"/>
+  <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname Error</div>
+  <br/>
+  <label for="number">Введите номер: </label>
+  <input type="text" th:field="*{number}" id="number"/>
+  <div style="color:red" th:if="${#fields.hasErrors('number')}" th:errors="*{number}">Number Error</div>
+  <br/>
   <label for="password">Введите пароль: </label>
   <input type="text" th:field="*{password}" id="password"/>
   <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>

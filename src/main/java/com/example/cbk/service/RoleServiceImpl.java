@@ -32,9 +32,7 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public void addRole(Role role) {
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        roleRepository.saveAll(roles);
+    public Role addRole(Role role) {
+        return roleRepository.save(role);
     }
 }

@@ -15,18 +15,17 @@ public class DataInitializer {
     private final UserServiceImpl userService;
     private final CashService cashService;
     private final CurrencyService currencyService;
-    private final AccountService accountService;
 
     @Autowired
-    public DataInitializer(UserServiceImpl userService, CashService cashService, CurrencyService currencyService, AccountService accountService) {
+    public DataInitializer(UserServiceImpl userService, CashService cashService, CurrencyService currencyService) {
         this.userService = userService;
         this.cashService = cashService;
         this.currencyService = currencyService;
-        this.accountService = accountService;
     }
 
     @PostConstruct
     public void Init() {
+
         User admin = new User();
         admin.setUsername("admin");
         admin.setPassword("admin");
@@ -39,29 +38,37 @@ public class DataInitializer {
         user.setRoles(Set.of(new Role("ROLE_USER")));
         userService.createUser(user);
 
-        Account account = new Account();
-        account.setName("Mirseit");
+        User account = new User();
+        account.setUsername("Mirseit");
         account.setSurname("Ibraimov");
+        account.setPassword("Mirseit");
         account.setNumber("0776750817");
-        accountService.create(account);
+        account.setRoles(Set.of(new Role("ROLE_USER")));
+        userService.createUser(account);
 
-        Account account1 = new Account();
-        account1.setName("Erlan");
+        User account1 = new User();
+        account1.setUsername("Erlan");
         account1.setSurname("Abdizhamilov");
+        account1.setPassword("Erlan");
         account1.setNumber("0776750817");
-        accountService.create(account1);
+        account1.setRoles(Set.of(new Role("ROLE_USER")));
+        userService.createUser(account1);
 
-        Account account2 = new Account();
-        account2.setName("Ernazar");
+        User account2 = new User();
+        account2.setUsername("Ernazar");
         account2.setSurname("Sydykov");
+        account2.setPassword("Ernazar");
         account2.setNumber("0776750817");
-        accountService.create(account2);
+        account2.setRoles(Set.of(new Role("ROLE_USER")));
+        userService.createUser(account2);
 
-        Account account3 = new Account();
-        account3.setName("Ilian");
+        User account3 = new User();
+        account3.setUsername("Ilian");
         account3.setSurname("Damirov");
+        account3.setPassword("Ilian");
         account3.setNumber("0776750817");
-        accountService.create(account3);
+        account3.setRoles(Set.of(new Role("ROLE_USER")));
+        userService.createUser(account3);
 
         Currency currency = new Currency();
         currency.setName("Рубль");

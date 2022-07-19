@@ -88,12 +88,12 @@
 
   <tr th:each="transfer:${transfers}">
     <td><a th:href="@{/transfer/{id}(id=${transfer.id})}" th:text="${transfer.id}"><p th:text="${transfer.id}"></p></a></td>
-    <td><p th:text="${transfer.sender.getName()}"></p></td>
-    <td><p th:text="${transfer.recipient.getName()}"></p></td>
+    <td><p th:text="${transfer.sender.getUsername()}"></p></td>
+    <td><p th:text="${transfer.recipient.getUsername()}"></p></td>
     <td><p th:text="${transfer.amount}"></p></td>
     <td><p th:text="${transfer.currency.getName()}"></p></td>
     <td><p th:text="${transfer.status}"></p></td>
-    <td><p th:text="${transfer.unicCode}"></p></td>
+    <td><p th:if="${id == transfer.cash.id}" th:text="${transfer.unicCode}"></p></td>
     <td><p th:text="${transfer.comment}"></p></td>
     <td>
 

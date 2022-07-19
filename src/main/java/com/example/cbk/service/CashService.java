@@ -1,6 +1,5 @@
 package com.example.cbk.service;
 
-import com.example.cbk.entity.Account;
 import com.example.cbk.entity.Cash;
 
 import java.util.List;

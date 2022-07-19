@@ -1,12 +1,9 @@
 package com.example.cbk.controller;
 
-import com.example.cbk.entity.Account;
 import com.example.cbk.entity.Cash;
 import com.example.cbk.entity.Transfer;
-import com.example.cbk.service.AccountService;
-import com.example.cbk.service.CashService;
-import com.example.cbk.service.CurrencyService;
-import com.example.cbk.service.TransferService;
+import com.example.cbk.entity.User;
+import com.example.cbk.service.*;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -24,22 +21,23 @@ import java.util.Objects;
 public class TransferController {
 
     private final TransferService transferService;
-    private final AccountService accountService;
+    private final UserServiceImpl userService;
     private final CurrencyService currencyService;
     private final CashService cashService;
 
     @Autowired
-    public TransferController(TransferService transferService, AccountService accountService, CurrencyService currencyService, CashService cashService) {
+    public TransferController(TransferService transferService, UserServiceImpl userService, CurrencyService currencyService, CashService cashService) {
         this.transferService = transferService;
-        this.accountService = accountService;
+        this.userService = userService;
         this.currencyService = currencyService;
         this.cashService = cashService;
     }
 
-    @GetMapping("/transfers")
-    public String getTransfers(Model model, @Param("keyword") String keyword) {
+    @GetMapping("/transfers/{id}")
+    public String getTransfers(Model model, @Param("keyword") String keyword, @PathVariable("id") Long id) {
         List<Transfer> transfers = transferService.search(keyword);
         model.addAttribute("transfers", transfers);
+        model.addAttribute("id", id);
         return "admin/transfer/transfers";
     }
 
@@ -52,7 +50,7 @@ public class TransferController {
     @GetMapping("/add")
     public String addTransferFrom(Model model) {
         model.addAttribute("transfer", new Transfer());
-        List<Account> accounts = accountService.getAll();
+        List<User> accounts = userService.getAllUsers();
         model.addAttribute("accounts", accounts);
         model.addAttribute("currencies", currencyService.getAll());
         model.addAttribute("cashes", cashService.getAll());
@@ -66,12 +64,12 @@ public class TransferController {
         }
 
         transfer.setStatus("СОЗДАН");
-        transfer.setUnicCode(Account.getCode());
+        transfer.setUnicCode(User.getCode());
         transferService.create(transfer);
-        Account account = accountService.getById(transfer.getSender().getId());
-        account.setUnicCode(transfer.getUnicCode());
-        account.setTransferId(transfer.getId());
-        accountService.update(account, transfer.getSender().getId());
+        User user = userService.getById(transfer.getSender().getId());
+        user.setUnicCode(transfer.getUnicCode());
+        user.setTransferId(transfer.getId());
+        userService.update(user, transfer.getSender().getId());
 
         return "redirect:/";
     }
@@ -79,7 +77,7 @@ public class TransferController {
     @GetMapping("/getTransfer")
     public String getTransferPage(Model model) {
         model.addAttribute("transfer", new Transfer());
-        List<Account> accounts = accountService.getAll();
+        List<User> accounts = userService.getAllUsers();
         model.addAttribute("accounts", accounts);
         model.addAttribute("currencies", currencyService.getAll());
         model.addAttribute("cashes", cashService.getAll());
@@ -92,7 +90,7 @@ public class TransferController {
             return "admin/transfer/add";
         }
 
-        Account account = accountService.getById(transfer.getSender().getId());
+        User account = userService.getById(transfer.getSender().getId());
         Transfer transfer1 = transferService.getById(account.getTransferId());
 
         if (transfer.getSender() == transfer1.getSender() &&

@@ -68,6 +68,8 @@ public class UserServiceImpl implements UserDetailsService {
     public void update(User user, Long id) {
         User user1 = userRepository.getById(id);
         user1.setUsername(user.getUsername());
+        user1.setSurname(user.getSurname());
+        user1.setNumber(user.getNumber());
         user1.setRoles(user.getRoles());
         user1.setPassword(user.getPassword());
         userRepository.saveAndFlush(user1);

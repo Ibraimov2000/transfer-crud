@@ -13,10 +13,10 @@ public class Transfer {
     private Long id;
 
     @ManyToOne
-    private Account sender;
+    private User sender;
 
     @ManyToOne
-    private Account recipient;
+    private User recipient;
 
     @ManyToOne
     private Currency currency;
