@@ -16,6 +16,7 @@ public interface TransferRepository extends JpaRepository<Transfer, Long> {
             + " OR t.recipient.username LIKE %?1%"
             + "OR t.recipient.surname LIKE %?1%"
             + "OR t.currency.name LIKE %?1%"
+            + " OR t.status LIKE %?1%"
             + " OR CONCAT(t.amount, '') LIKE %?1%"
             + " OR CONCAT(t.unicCode, '') LIKE %?1%"
             + " OR CONCAT(t.cash.id, '') LIKE %?1%")

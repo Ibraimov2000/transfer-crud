@@ -64,7 +64,7 @@
 <h1 style="text-align: center; font-family: Cambria">Переводы</h1>
 
 <br/><br/>
-<form th:action="@{/transfer/transfers}">
+<form th:action="@{/transfer/transfers/{id}/(id=${id})}">
   Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
   &nbsp;
   <input type="submit" value="Search" />
@@ -121,7 +121,7 @@
 
 <script type="text/javascript">
   function clearSearch() {
-    window.location = "[[@{/transfer/transfers}]]";
+    window.location = "[[@{/transfer/transfers{id}/(id=${id})}]]";
   }
 </script>
 </body>
