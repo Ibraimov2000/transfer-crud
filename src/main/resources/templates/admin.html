@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+          integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+</head>
+<body>
+    <div class="d-flex bg-dark" th:object="${authorizedUser}">
+        <div class="p-2 text-white font-weight-bold" th:text="*{username}"></div>
+        <div class="p-2 w-100 text-white" th:utext="'with roles: ' + *{authorities}"></div>
+        <a class="p-2 text-secondary text-right text-decoration-none" th:href="@{/logout}"> Logout </a>
+    </div>
+    <div class="row">
+        <div class="col-2 mt-3 p-0">
+            <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                <a class="nav-item nav-link ml-2 active" data-toggle="pill" href="#admin_panel" role="tab"
+                   aria-controls="admin_panel" aria-selected="true">Admin</a>
+                <a class="nav-item nav-link ml-2" data-toggle="pill" href="#user_panel" role="tab"
+                   aria-controls="user_panel" aria-selected="true">User</a>
+            </div>
+        </div>
+        <div class="col-10 p-0">
+            <div class="tab-content bg-light p-2">
+                <div class="tab-pane fade show active pl-3" style="height: 700px;" id="admin_panel" role="tabpanel"
+                     aria-labelledby="admin_panel">
+                    <h1>Admin panel</h1>
+                    <nav>
+                        <div class="nav nav-tabs" role="tablist">
+                            <a class="nav-item nav-link active" data-toggle="tab" role="tab" href="#users_table">User table</a>
+                            <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#new_user">New User</a>
+                            <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#cash_table">Cash table</a>
+                            <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#new_cash">New cash</a>
+                            <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#currency_table">Currency table</a>
+                            <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#new_currency">New currency</a>
+                            <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#transfer_table">Transfer table</a>
+                            <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#new_transfer">New transfer</a>
+                            <a class="nav-item nav-link" data-toggle="tab" role="tab" href="#get_transfer">Get transfer</a>
+                        </div>
+                    </nav>
+
+                    <div class="tab-content">
+
+                        <!-- Users table -->
+                        <div class="tab-pane fade show active border" id="users_table" role="tabpanel">
+                            <div class="pl-3 pt-1 d-flex border-bottom"><h4> All users</h4></div>
+                            <div class="bg-white p-3">
+                                <table class="table table-striped border-top">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Surname</th>
+                                        <th>Password</th>
+                                        <th>Role</th>
+                                        <th>UnicCode</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="user : ${users}">
+                                        <td th:text="${user.id}"></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td th:text="${user.surname}"></td>
+                                        <td th:text="${user.password}"></td>
+                                        <td th:text="${#strings.arrayJoin(user.roles, ' ')}"></td>
+                                        <td th:text="${user.unicCode}"></td>
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <a role="button"
+                                               class="btn btn-primary btn-sm"
+                                               data-toggle="modal"
+                                               data-target="#editModalUser"
+                                               th:attrappend="data-target=${user.id}">Edit</a>
+                                            <!-- Modal window-->
+                                            <div id="editModalUser" th:attrappend="id=${user.id}"
+                                                 class="modal fade" tabindex="-1" role="dialog"
+                                                 aria-labelledby="TitleModalLabelUser" aria-hidden="true"
+                                                 data-backdrop="static" data-keyboard="false">
+                                                <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="TitleModalLabelUser">Edit user</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- Редактирование-->
+                                                        <div class="modal-body bg-white">
+                                                            <form id="formEditUser" th:attrappend="id=${user.id}"
+                                                                  method="post"
+                                                                  th:action="@{/user/update}"
+                                                                  class="form-signin mx-auto font-weight-bold text-center"
+                                                                  style="width: 200px;">
+                                                                <p>
+                                                                    <label for="idUser">ID</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="idUser" id="idUser" readonly
+                                                                           th:value="${user.id}">
+                                                                </p>
+                                                                <p>
+                                                                    <label for="username">Username</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="username" th:value="${user.username}"
+                                                                           id="username" placeholder="Username" required
+                                                                           autofocus>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="surname">Surname</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="surname" th:value="${user.surname}"
+                                                                           id="surname" placeholder="Surname">
+                                                                </p>
+                                                                <p>
+                                                                    <label for="passwd">Password</label>
+                                                                    <input class="form-control form-control-sm"
+                                                                           type="password"
+                                                                           name="password" th:value="${user.password}"
+                                                                           id="passwd" placeholder="Password" required>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="roles">Role</label>
+                                                                    <select id="roles" name="roles" th:value="${user.roles}"
+                                                                            class="form-control form-control-sm"
+                                                                            multiple size="2" required>
+                                                                        <option th:each="role : ${allRoles}"
+                                                                                th:value="${role.id}"
+                                                                                th:text="${role.name}"
+                                                                                th:selected="${user.roles.contains(role)}">
+                                                                        </option>
+                                                                    </select>
+
+                                                                </p>
+                                                            </form>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" form="formEditUser"
+                                                                    th:attrappend="form=${user.id}"
+                                                                    class="btn btn-primary">Edit
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <!-- Удаление-->
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <a role="button"
+                                               class="btn btn-danger btn-sm"
+                                               data-toggle="modal"
+                                               data-target="#deleteModalUser"
+                                               th:attrappend="data-target=${user.id}">Delete</a>
+                                            <!-- Modal window-->
+                                            <div id="deleteModalUser" th:attrappend="id=${user.id}"
+                                                 class="modal fade" tabindex="-1" role="dialog"
+                                                 aria-labelledby="TitleModalLabelUserDelete" aria-hidden="true"
+                                                 data-backdrop="static" data-keyboard="false">
+                                                <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="TitleModalLabelUserDelete">Edit user</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body bg-white">
+                                                            <form id="formDeleteUser" th:attrappend="id=${user.id}"
+                                                                  method="post"
+                                                                  th:action="@{/user/delete/{id}(id=${user.id})}"
+
+                                                                  class="form-signin mx-auto font-weight-bold text-center"
+                                                                  style="width: 200px;">
+                                                                <p>
+                                                                    <label for="del_id_user">ID</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="id" id="del_id_user" readonly
+                                                                           th:value="${user.id}">
+                                                                </p>
+                                                                <p>
+                                                                    <label for="del_name_user">Username</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="Username" th:value="${user.username}"
+                                                                           id="del_name_user" readonly
+                                                                           placeholder="Username" autofocus>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="del_surname_user">Surname</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="surname" th:value="${user.surname}"
+                                                                           id="del_surname_user" readonly
+                                                                           placeholder="Surname">
+                                                                </p>
+                                                                <p>
+                                                                    <label for="del_roles_user">Role</label>
+                                                                    <select id="del_roles_user" name="roles"
+                                                                            class="form-control form-control-sm"
+                                                                            multiple size="2" readonly>
+                                                                        <option th:each="role : ${allRoles}"
+                                                                                th:value="${role.id}"
+                                                                                th:text="${role.name}"
+                                                                                th:selected="${user.roles.contains(role)}">
+                                                                        </option>
+                                                                    </select>
+                                                                </p>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" form="formDeleteUser"
+                                                                    th:attrappend="form=${user.id}"
+                                                                    class="btn btn-danger">Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- New user -->
+                        <div class="tab-pane fade border" id="new_user" role="tabpanel">
+                            <div class="pl-3 pt-1 d-flex border-bottom"><h4>Add new user</h4></div>
+                            <div class="container bg-white">
+                                <form class="form-signin mx-auto font-weight-bold text-center p-3"
+                                      style="width: 300px;" th:action="@{/user/addUser}" method="post" th:object="${newUser}">
+                                    <p>
+                                        <label for="newUsername">Username</label>
+                                        <input class="form-control form-control-sm" type="text"
+                                               name="Username" id="newUsername" placeholder="Username" required autofocus>
+                                    </p>
+                                    <p>
+                                        <label for="newSurname">Surname</label>
+                                        <input class="form-control form-control-sm" type="text"
+                                               name="surname" id="newSurname" placeholder="Surname">
+                                    </p>
+                                    <p>
+                                        <label for="newPasswd">Password</label>
+                                        <input class="form-control form-control-sm" type="password"
+                                               name="password" id="newPasswd" placeholder="Password" required>
+                                    </p>
+                                    <p>
+
+                                        <label for="newRoles">Role</label>
+                                        <select class="form-control form-control-sm" id="newRoles" name="roles" multiple
+                                                size="2" required>
+                                            <option th:each="role : ${allRoles}"
+                                                    th:value="${role.id}"
+                                                    th:text="${role.name}">
+                                            </option>
+                                        </select>
+
+                                    </p>
+                                    <button class="btn btn-success" type="submit">Add new user</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Cash table -->
+                        <div class="tab-pane fade border" id="cash_table" role="tabpanel">
+                            <div class="pl-3 pt-1 d-flex border-bottom"><h4>All cashes</h4></div>
+                            <div class="bg-white p-3">
+                                <table class="table table-striped border-top">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Баланс</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="cash : ${cashes}">
+                                        <td th:text="${cash.id}"></td>
+                                        <td th:text="${cash.balance}"></td>
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <a role="button"
+                                               class="btn btn-primary btn-sm"
+                                               data-toggle="modal"
+                                               data-target="#editModalCash"
+                                               th:attrappend="data-target=${cash.id}">Edit</a>
+                                            <!-- Modal window-->
+                                            <div id="editModalCash" th:attrappend="id=${cash.id}"
+                                                 class="modal fade" tabindex="-1" role="dialog"
+                                                 aria-labelledby="TitleModalLabelCash" aria-hidden="true"
+                                                 data-backdrop="static" data-keyboard="false">
+                                                <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="TitleModalLabelCash">Edit cash</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- Редактирование-->
+
+                                                        <div class="modal-body bg-white">
+                                                            <form id="formEditCash" th:attrappend="id=${cash.id}"
+                                                                  method="post"
+                                                                  th:action="@{/cash/update}"
+                                                                  class="form-signin mx-auto font-weight-bold text-center"
+                                                                  style="width: 200px;">
+                                                                <p>
+                                                                    <label for="cashId">ID</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="id" id="cashId" readonly
+                                                                           th:value="${cash.id}">
+                                                                </p>
+                                                                <p>
+                                                                    <label for="balance">Balance</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="balance" th:value="${cash.balance}"
+                                                                           id="balance" placeholder="Balance" required
+                                                                           autofocus>
+                                                                </p>
+                                                            </form>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" form="formEditCash"
+                                                                    th:attrappend="form=${cash.id}"
+                                                                    class="btn btn-primary">Edit
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <!-- Удаление-->
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <a role="button"
+                                               class="btn btn-danger btn-sm"
+                                               data-toggle="modal"
+                                               data-target="#deleteModalCash"
+                                               th:attrappend="data-target=${cash.id}">Delete</a>
+
+                                            <!-- Modal window-->
+                                            <div id="deleteModalCash" th:attrappend="id=${cash.id}"
+                                                 class="modal fade" tabindex="-1" role="dialog"
+                                                 aria-labelledby="TitleModalLabelCashDelete" aria-hidden="true"
+                                                 data-backdrop="static" data-keyboard="false">
+                                                <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="TitleModalLabelCashDelete">Edit cash</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body bg-white">
+                                                            <form id="formDeleteCash" th:attrappend="id=${cash.id}"
+                                                                  method="post"
+                                                                  th:action="@{/cash/delete/{id}(id=${cash.id})}"
+
+                                                                  class="form-signin mx-auto font-weight-bold text-center"
+                                                                  style="width: 200px;">
+                                                                <p>
+                                                                    <label for="cash_del_id">ID</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="id" id="cash_del_id" readonly
+                                                                           th:value="${cash.id}">
+                                                                </p>
+                                                                <p>
+                                                                    <label for="cash_del_balance">Balance</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="name" th:value="${cash.balance}"
+                                                                           id="cash_del_balance" readonly
+                                                                           placeholder="Balance" autofocus>
+                                                                </p>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" form="formDeleteCash"
+                                                                    th:attrappend="form=${cash.id}"
+                                                                    class="btn btn-danger">Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                    </div>
+
+                        <!-- New cash -->
+                        <div class="tab-pane fade border" id="new_cash" role="tabpanel">
+                            <div class="pl-3 pt-1 d-flex border-bottom"><h4>Add new cash</h4></div>
+                            <div class="container bg-white">
+                                <form class="form-signin mx-auto font-weight-bold text-center p-3"
+                                      style="width: 300px;" th:action="@{/cash/addCash}" method="post" th:object="${newCash}">
+                                    <p>
+                                        <label for="newBalance">Balance</label>
+                                        <input class="form-control form-control-sm" type="number" th:field="*{balance}"
+                                               name="newBalance" id="newBalance" placeholder="Balance" required autofocus>
+                                    </p>
+                                    <button class="btn btn-success" type="submit">Add new cash</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Currency table -->
+                        <div class="tab-pane fade border" id="currency_table" role="tabpanel">
+                            <div class="pl-3 pt-1 d-flex border-bottom"><h4>All cashes</h4></div>
+                            <div class="bg-white p-3">
+                                <table class="table table-striped border-top">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Название</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="currency : ${currencies}">
+                                        <td th:text="${currency.id}"></td>
+                                        <td th:text="${currency.name}"></td>
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <a role="button"
+                                               class="btn btn-primary btn-sm"
+                                               data-toggle="modal"
+                                               data-target="#editModalCurrency"
+                                               th:attrappend="data-target=${currency.id}">Edit</a>
+                                            <!-- Modal window-->
+                                            <div id="editModalCurrency" th:attrappend="id=${currency.id}"
+                                                 class="modal fade" tabindex="-1" role="dialog"
+                                                 aria-labelledby="TitleModalLabelCurrency" aria-hidden="true"
+                                                 data-backdrop="static" data-keyboard="false">
+                                                <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="TitleModalLabelCurrency">Edit cash</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- Редактирование-->
+
+                                                        <div class="modal-body bg-white">
+                                                            <form id="formEditCurrency" th:attrappend="id=${currency.id}"
+                                                                  method="post"
+                                                                  th:action="@{/currency/update}"
+                                                                  class="form-signin mx-auto font-weight-bold text-center"
+                                                                  style="width: 200px;">
+                                                                <p>
+                                                                    <label for="currencyId">ID</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="id" id="currencyId" readonly
+                                                                           th:value="${currency.id}">
+                                                                </p>
+                                                                <p>
+                                                                    <label for="currencyName">Название</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="currencyName" th:value="${currency.name}"
+                                                                           id="currencyName" placeholder="Name" required
+                                                                           autofocus>
+                                                                </p>
+                                                            </form>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" form="formEditCurrency"
+                                                                    th:attrappend="form=${currency.id}"
+                                                                    class="btn btn-primary">Edit
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <!-- Удаление-->
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <a role="button"
+                                               class="btn btn-danger btn-sm"
+                                               data-toggle="modal"
+                                               data-target="#deleteModalCurrency"
+                                               th:attrappend="data-target=${currency.id}">Delete</a>
+
+                                            <!-- Modal window-->
+                                            <div id="deleteModalCurrency" th:attrappend="id=${currency.id}"
+                                                 class="modal fade" tabindex="-1" role="dialog"
+                                                 aria-labelledby="TitleModalLabelCurrencyDelete" aria-hidden="true"
+                                                 data-backdrop="static" data-keyboard="false">
+                                                <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="TitleModalLabelCurrencyDelete">Edit currency</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body bg-white">
+                                                            <form id="formDeleteCurrency" th:attrappend="id=${currency.id}"
+                                                                  method="post"
+                                                                  th:action="@{/currency/delete/{id}(id=${currency.id})}"
+
+                                                                  class="form-signin mx-auto font-weight-bold text-center"
+                                                                  style="width: 200px;">
+                                                                <p>
+                                                                    <label for="currency_del_id">ID</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="id" id="currency_del_id" readonly
+                                                                           th:value="${currency.id}">
+                                                                </p>
+                                                                <p>
+                                                                    <label for="currency_del_name">Name</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="name" th:value="${currency.name}"
+                                                                           id="currency_del_name" readonly
+                                                                           placeholder="Name" autofocus>
+                                                                </p>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" form="formDeleteCurrency"
+                                                                    th:attrappend="form=${currency.id}"
+                                                                    class="btn btn-danger">Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <!-- New currency -->
+                        <div class="tab-pane fade border" id="new_currency" role="tabpanel">
+                            <div class="pl-3 pt-1 d-flex border-bottom"><h4>Add new currency</h4></div>
+                            <div class="container bg-white">
+                                <form class="form-signin mx-auto font-weight-bold text-center p-3"
+                                      style="width: 300px;" th:action="@{/currency/addCurrency}" method="post" th:object="${newCurrency}">
+                                    <p>
+                                        <label for="newName">Name</label>
+                                        <input class="form-control form-control-sm" type="text" th:field="*{name}"
+                                               name="newName" id="newName" placeholder="Name" required autofocus>
+                                    </p>
+                                    <button class="btn btn-success" type="submit">Add new currency</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Transfer table -->
+                        <div class="tab-pane fade border" id="transfer_table" role="tabpanel">
+                            <form th:action="@{/}">
+<!--                                <p>-->
+<!--                                    <label for="transfers_cash">КАССА: </label>-->
+<!--                                    <select class="form-control form-control-sm" id="transfers_cash" placeholder="Cash ID" required autofocus th:value="${id}">-->
+<!--                                        <th:block th:each="cash:${cashes}">-->
+<!--                                            <option th:value="${cash.id}"-->
+<!--                                                    th:text="${cash.id}">-->
+<!--                                            </option>-->
+<!--                                        </th:block>-->
+<!--                                    </select>-->
+<!--                                </p>-->
+                                <label for="keyword">Cash ID</label>
+                                <input class="form-control form-control-sm" type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+                                &nbsp;<br/>
+                                <input class="btn btn-primary" type="submit" value="Search" />
+                                &nbsp;<br/>
+                                <input class="btn btn-secondary" style="margin-top: 20px;" type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+                            </form>
+                            <div class="pl-3 pt-1 d-flex border-bottom"><h4> All transfers</h4></div>
+                            <div class="bg-white p-3">
+                                <table class="table table-striped border-top">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Sender</th>
+                                        <th>Recipient</th>
+                                        <th>Currency</th>
+                                        <th>Status</th>
+                                        <th>Comment</th>
+                                        <th>Amount</th>
+                                        <th>Cash</th>
+                                        <th>UnicCode</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="transfer : ${transfers}">
+                                        <td th:text="${transfer.id}"></td>
+                                        <td th:text="${transfer.sender.username}"></td>
+                                        <td th:text="${transfer.recipient.username}"></td>
+                                        <td th:text="${transfer.currency.name}"></td>
+                                        <td th:text="${transfer.status}"></td>
+                                        <td th:text="${transfer.comment}"></td>
+                                        <td th:text="${transfer.amount}"></td>
+                                        <td th:text="${transfer.cash.id}"></td>
+                                        <td th:if="*{keyword == transfer.cash.id}" th:text="${transfer.unicCode}"></td>
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <a role="button"
+                                               class="btn btn-primary btn-sm"
+                                               data-toggle="modal"
+                                               data-target="#editModalTransfer"
+                                               th:attrappend="data-target=${transfer.id}">Edit</a>
+                                            <!-- Modal window-->
+                                            <div id="editModalTransfer" th:attrappend="id=${transfer.id}"
+                                                 class="modal fade" tabindex="-1" role="dialog"
+                                                 aria-labelledby="TitleModalLabel" aria-hidden="true"
+                                                 data-backdrop="static" data-keyboard="false">
+                                                <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="TitleModalLabel">Edit transfer</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- Редактирование-->
+                                                        <div class="modal-body bg-white">
+                                                            <form id="formEditTransfer" th:attrappend="id=${transfer.id}"
+                                                                  method="post"
+                                                                  th:action="@{/transfer/update}"
+                                                                  class="form-signin mx-auto font-weight-bold text-center"
+                                                                  style="width: 200px;">
+                                                                <p>
+                                                                    <label for="transferId">ID</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="transferId" id="transferId" readonly
+                                                                           th:value="${transfer.id}">
+                                                                </p>
+                                                                <p>
+                                                                    <label for="sender">Выберите отправителя: </label>
+                                                                    <select class="form-control form-control-sm" id="sender" placeholder="sender" required autofocus th:value="${transfer.sender}">
+                                                                        <th:block th:each="sender:${users}">t
+                                                                            <option th:value="${sender.id}"
+                                                                                    th:text="${sender.username}">
+                                                                            </option>
+                                                                        </th:block>
+                                                                    </select>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="recipient">Выберите получателя: </label>
+                                                                    <select class="form-control form-control-sm" id="recipient" required autofocus th:value="${transfer.recipient}">
+                                                                        <th:block th:each="recipient:${users}">
+                                                                            <option th:value="${recipient.id}"
+                                                                                    th:text="${recipient.username}">
+                                                                            </option>
+                                                                        </th:block>
+                                                                    </select>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="amount">Введите сумму: </label>
+                                                                    <input class="form-control form-control-sm" name="amount" placeholder="amount" required type="text" th:value="${transfer.amount}" id="amount"/>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="comment">Введите комментарий: </label>
+                                                                    <input class="form-control form-control-sm" name="comment" placeholder="comment" required type="text" th:value="${transfer.comment}" id="comment"/>
+                                                                </p>
+                                                            </form>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" form="formEditTransfer"
+                                                                    th:attrappend="form=${transfer.id}"
+                                                                    class="btn btn-primary">Edit
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <!-- Удаление-->
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <a role="button"
+                                               class="btn btn-danger btn-sm"
+                                               data-toggle="modal"
+                                               data-target="#deleteModalTransfer"
+                                               th:attrappend="data-target=${transfer.id}">Delete</a>
+                                            <!-- Modal window-->
+                                            <div id="deleteModalTransfer" th:attrappend="id=${transfer.id}"
+                                                 class="modal fade" tabindex="-1" role="dialog"
+                                                 aria-labelledby="TitleModalLabelTransferDelete" aria-hidden="true"
+                                                 data-backdrop="static" data-keyboard="false">
+                                                <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="TitleModalLabelTransferDelete">Edit transfer</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body bg-white">
+                                                            <form id="formDeleteTransfer" th:attrappend="id=${transfer.id}"
+                                                                  method="post"
+                                                                  th:action="@{/transfer/delete/{id}(id=${transfer.id})}"
+
+                                                                  class="form-signin mx-auto font-weight-bold text-center"
+                                                                  style="width: 200px;">
+                                                                <p>
+                                                                    <label for="transfer_del_id">ID</label>
+                                                                    <input class="form-control form-control-sm" type="text"
+                                                                           name="id" id="transfer_del_id" readonly
+                                                                           th:value="${transfer.id}">
+                                                                </p>
+
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" form="formDeleteTransfer"
+                                                                    th:attrappend="form=${transfer.id}"
+                                                                    class="btn btn-danger">Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <!-- New transfer -->
+                        <div class="tab-pane fade border" id="new_transfer" role="tabpanel">
+                            <div class="pl-3 pt-1 d-flex border-bottom"><h4>Add new transfer</h4></div>
+                            <div class="container bg-white">
+                                <form class="form-signin mx-auto font-weight-bold text-center p-3"
+                                      style="width: 300px;" th:action="@{/transfer/addTransfer}" method="post" th:modelAttribute="${transfer}" th:object="${newTransfer}">
+
+                                    <p>
+                                        <label for="transfer_cash">КАССА: </label>
+                                        <select class="form-control form-control-sm" id="transfer_cash" placeholder="Cash" required autofocus th:field="*{cash}">
+                                            <th:block th:each="cash:${cashes}">
+                                                <option th:value="${cash.id}"
+                                                        th:text="${cash.id}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </p>
+
+                                    <p>
+                                        <label for="newSender">Выберите отправителя: </label>
+                                        <select class="form-control form-control-sm" id="newSender" placeholder="sender" required autofocus th:field="*{sender}">
+                                            <th:block th:each="sender:${users}">
+                                                <option th:value="${sender.id}"
+                                                        th:text="${sender.username}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </p>
+                                    <p>
+                                        <label for="newRecipient">Выберите получателя: </label>
+                                        <select class="form-control form-control-sm" id="newRecipient" required autofocus th:field="*{recipient}">
+                                            <th:block th:each="recipient:${users}">
+                                                <option th:value="${recipient.id}"
+                                                        th:text="${recipient.username}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </p>
+
+                                    <p>
+                                        <label>Выберите валюту: </label>
+                                        <select class="form-control form-control-sm" id="newCurrency" required autofocus th:field="*{currency}">
+                                            <th:block th:each="currency:${currencies}">
+                                                <option th:value="${currency.id}"
+                                                        th:text="${currency.name}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </p>
+
+                                    <p>
+                                        <label for="newAmount">Введите сумму: </label>
+                                        <input class="form-control form-control-sm" name="newAmount" placeholder="Amount" required type="text" th:field="*{amount}" id="newAmount"/>
+                                    </p>
+                                    <p>
+                                        <label for="newComment">Введите комментарий: </label>
+                                        <input class="form-control form-control-sm" name="newComment" placeholder="Comment" required type="text" th:field="*{comment}" id="newComment"/>
+                                    </p>
+                                    <button class="btn btn-success" type="submit">Add new transfer</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Получить перевод -->
+                        <div class="tab-pane fade border" id="get_transfer" role="tabpanel">
+                            <div class="pl-3 pt-1 d-flex border-bottom"><h4> Get transfer</h4></div>
+                            <div class="container bg-white">
+                                <form class="form-signin mx-auto font-weight-bold text-center p-3"
+                                      style="width: 300px;" th:action="@{/transfer/getTransfer}" method="post" th:object="${newTransfer}">
+
+                                    <p>
+                                        <label for="choose_cash">КАССА: </label>
+                                        <select class="form-control form-control-sm" id="choose_cash" placeholder="Cash" required autofocus th:field="*{cash}">
+                                            <th:block th:each="cash:${cashes}">
+                                                <option th:value="${cash.id}"
+                                                        th:text="${cash.id}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </p>
+
+                                    <p>
+                                        <label for="setSender">Выберите отправителя: </label>
+                                        <select class="form-control form-control-sm" id="setSender" placeholder="Sender" required autofocus th:field="*{sender}">
+                                            <th:block th:each="sender:${users}">
+                                                <option th:value="${sender.id}"
+                                                        th:text="${sender.username}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </p>
+                                    <p>
+                                        <label for="setRecipient">Выберите получателя: </label>
+                                        <select class="form-control form-control-sm" id="setRecipient" placeholder="Recipient" required autofocus th:field="*{recipient}">
+                                            <th:block th:each="recipient:${users}">
+                                                <option th:value="${recipient.id}"
+                                                        th:text="${recipient.username}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </p>
+
+                                    <p>
+                                        <label for="setCurrency">Выберите валюту: </label>
+                                        <select class="form-control form-control-sm" id="setCurrency" placeholder="Currency" required autofocus th:field="*{currency}">
+                                            <th:block th:each="currency:${currencies}">
+                                                <option th:value="${currency.id}"
+                                                        th:text="${currency.name}">
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </p>
+
+                                    <p>
+                                        <label for="setAmount">Введите сумму: </label>
+                                        <input class="form-control form-control-sm" name="setAmount" placeholder="Amount" required type="text" th:field="*{amount}" id="setAmount"/>
+                                    </p>
+                                    <p>
+                                        <label for="setComment">Введите комментарий: </label>
+                                        <input class="form-control form-control-sm" name="setComment" placeholder="Comment" required type="text" th:field="*{comment}" id="setComment"/>
+                                    </p>
+                                    <p>
+                                        <label for="setUnicCode">Введите уникальный код: </label>
+                                        <input class="form-control form-control-sm" name="setUnicCode" placeholder="Code" required type="text" th:field="*{unicCode}" id="setUnicCode"/>
+                                    </p>
+                                    <button class="btn btn-success" type="submit">Get transfer</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane fade pl-3" style="height: 700px;" id="user_panel" role="tabpanel"
+                     aria-labelledby="user_panel">
+                        <h1>User information-page</h1>
+                        <div class="pl-3 pt-1 d-flex border-top border-left border-right"><h4>About user</h4></div>
+                        <div class="bg-white border p-3">
+                            <table class="table table-striped border-top">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Surname</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:object="${authorizedUser}">
+                                        <td th:utext="${authorizedUser.username}"></td>
+                                        <td th:utext="${authorizedUser.password}"></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function clearSearch() {
+            window.location = "[[@{/}]]";
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+            integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+            crossorigin="anonymous"></script>
+</body>
+</html>
