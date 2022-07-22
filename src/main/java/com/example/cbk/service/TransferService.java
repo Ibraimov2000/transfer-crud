@@ -10,5 +10,5 @@ public interface TransferService {
     Transfer getById(Long id);
     List<Transfer> getAll();
     void deleteById(Long id);
-    List<Transfer> search(String keyword);
+    List<Transfer> search(Long keyword);
 }

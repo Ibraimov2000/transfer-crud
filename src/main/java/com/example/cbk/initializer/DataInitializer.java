@@ -28,14 +28,16 @@ public class DataInitializer {
 
         User admin = new User();
         admin.setUsername("admin");
+        admin.setSurname("admin");
         admin.setPassword("admin");
-        admin.setRoles(Set.of(new Role("ROLE_ADMIN")));
+        admin.setRoles(Set.of(new Role("ADMIN")));
         userService.createUser(admin);
 
         User user = new User();
         user.setUsername("user");
+        user.setSurname("user");
         user.setPassword("user");
-        user.setRoles(Set.of(new Role("ROLE_USER")));
+        user.setRoles(Set.of(new Role("USER")));
         userService.createUser(user);
 
         User account = new User();
@@ -43,7 +45,7 @@ public class DataInitializer {
         account.setSurname("Ibraimov");
         account.setPassword("Mirseit");
         account.setNumber("0776750817");
-        account.setRoles(Set.of(new Role("ROLE_USER")));
+        account.setRoles(Set.of(new Role("USER")));
         userService.createUser(account);
 
         User account1 = new User();
@@ -51,7 +53,7 @@ public class DataInitializer {
         account1.setSurname("Abdizhamilov");
         account1.setPassword("Erlan");
         account1.setNumber("0776750817");
-        account1.setRoles(Set.of(new Role("ROLE_USER")));
+        account1.setRoles(Set.of(new Role("USER")));
         userService.createUser(account1);
 
         User account2 = new User();
@@ -59,7 +61,7 @@ public class DataInitializer {
         account2.setSurname("Sydykov");
         account2.setPassword("Ernazar");
         account2.setNumber("0776750817");
-        account2.setRoles(Set.of(new Role("ROLE_USER")));
+        account2.setRoles(Set.of(new Role("USER")));
         userService.createUser(account2);
 
         User account3 = new User();
@@ -67,7 +69,7 @@ public class DataInitializer {
         account3.setSurname("Damirov");
         account3.setPassword("Ilian");
         account3.setNumber("0776750817");
-        account3.setRoles(Set.of(new Role("ROLE_USER")));
+        account3.setRoles(Set.of(new Role("USER")));
         userService.createUser(account3);
 
         Currency currency = new Currency();

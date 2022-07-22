@@ -52,7 +52,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public List<Transfer> search(String keyword) {
+    public List<Transfer> search(Long keyword) {
         if (keyword != null) {
             return transferRepository.search(keyword);
         }

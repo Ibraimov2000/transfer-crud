@@ -57,11 +57,11 @@
 --     references roles(id)
 -- );
 
-create table if not exists account (id  bigserial not null, name varchar(255), number varchar(255), surname varchar(255), transfer_id int8 references transfer(id), unic_code int4, primary key (id));
-create table if not exists cash (id  bigserial not null, balance int8, primary key (id));
-create table if not exists currency (id  bigserial not null, name varchar(255), primary key (id));
-create table if not exists roles (id  bigserial not null, name varchar(255), primary key (id));
-create table if not exists transfer (id  bigserial not null, amount int8 not null, comment varchar(255), status varchar(255), unic_code int4, cash_id int8 references cash(id), currency_id int8 references currency(id), recipient_id int8 references account(id), sender_id int8 references account(id), primary key (id));
-create table if not exists users (id  bigserial not null, password varchar(255) not null, username varchar(255), primary key (id));
-create table if not exists users_roles (user_id int8 not null references users(id), role_id int8 not null references roles(id));
-
+-- create table if not exists account (id  bigserial not null, name varchar(255), number varchar(255), surname varchar(255), transfer_id int8 references transfer(id), unic_code int4, primary key (id));
+-- create table if not exists cash (id  bigserial not null, balance int8, primary key (id));
+-- create table if not exists currency (id  bigserial not null, name varchar(255), primary key (id));
+-- create table if not exists roles (id  bigserial not null, name varchar(255), primary key (id));
+-- create table if not exists transfer (id  bigserial not null, amount int8 not null, comment varchar(255), status varchar(255), unic_code int4, cash_id int8 references cash(id), currency_id int8 references currency(id), recipient_id int8 references account(id), sender_id int8 references account(id), primary key (id));
+-- create table if not exists users (id  bigserial not null, password varchar(255) not null, username varchar(255), primary key (id));
+-- create table if not exists users_roles (user_id int8 not null references users(id), role_id int8 not null references roles(id));
+--
