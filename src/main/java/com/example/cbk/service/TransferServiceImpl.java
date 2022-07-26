@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,6 +34,7 @@ public class TransferServiceImpl implements TransferService {
         transfer1.setSender(transfer.getSender());
         transfer1.setStatus(transfer.getStatus());
         transfer1.setUnicCode(transfer.getUnicCode());
+        transfer1.setCreated(LocalDateTime.now());
         transferRepository.saveAndFlush(transfer1);
     }
 

@@ -627,6 +627,7 @@
                                         <th>Amount</th>
                                         <th>Cash</th>
                                         <th>UnicCode</th>
+                                        <th>Created at</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
@@ -642,6 +643,8 @@
                                         <td th:text="${transfer.amount}"></td>
                                         <td th:text="${transfer.cash.id}"></td>
                                         <td th:if="*{keyword == transfer.cash.id}" th:text="${transfer.unicCode}"></td>
+                                        <td th:unless="*{keyword == transfer.cash.id}" text="*****"></td>
+                                        <td th:text="${transfer.created.toString()}"></td>
                                         <td>
                                             <!-- Button trigger modal -->
                                             <a role="button"
