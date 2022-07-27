@@ -1,14 +1,19 @@
 package com.example.cbk.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 @Entity
 @Data
+@NoArgsConstructor
+@SuperBuilder
 public class Transfer {
 
     @Id

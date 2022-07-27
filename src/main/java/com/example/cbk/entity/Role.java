@@ -1,11 +1,15 @@
 package com.example.cbk.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@SuperBuilder
+@NoArgsConstructor
 @Table(name = "roles")
 public class Role {
 
@@ -19,9 +23,6 @@ public class Role {
         this.name = name;
     }
 
-    public Role() {
-
-    }
 
     public Role(Long id, String name) {
         this.id = id;

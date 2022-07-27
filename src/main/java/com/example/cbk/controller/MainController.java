@@ -98,6 +98,7 @@ public class MainController {
                 Objects.equals(transfer.getAmount(), transfer1.getAmount()) &&
                 transfer.getCurrency() == transfer1.getCurrency() &&
                 Objects.equals(transfer.getUnicCode(), transfer1.getUnicCode())) {
+
             Cash cash = cashService.getById(transfer1.getCash().getId());
             long balance = (cash.getBalance() - transfer.getAmount());
             cash.setBalance(balance);
