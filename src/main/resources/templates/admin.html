@@ -19,8 +19,8 @@
             <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
                 <a class="nav-item nav-link ml-2 active" data-toggle="pill" href="#admin_panel" role="tab"
                    aria-controls="admin_panel" aria-selected="true">Admin</a>
-                <a class="nav-item nav-link ml-2" data-toggle="pill" href="#user_panel" role="tab"
-                   aria-controls="user_panel" aria-selected="true">User</a>
+<!--                <a class="nav-item nav-link ml-2" data-toggle="pill" href="#user_panel" role="tab"-->
+<!--                   aria-controls="user_panel" aria-selected="true">User</a>-->
             </div>
         </div>
         <div class="col-10 p-0">
@@ -916,28 +916,28 @@
 
                     </div>
 
-                    <div class="tab-pane fade pl-3" style="height: 700px;" id="user_panel" role="tabpanel"
-                     aria-labelledby="user_panel">
-                        <h1>User information-page</h1>
-                        <div class="pl-3 pt-1 d-flex border-top border-left border-right"><h4>About user</h4></div>
-                        <div class="bg-white border p-3">
-                            <table class="table table-striped border-top">
-                                <thead>
-                                    <tr>
-                                        <th>Username</th>
-                                        <th>Surname</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:object="${authorizedUser}">
-                                        <td th:utext="${authorizedUser.username}"></td>
-                                        <td th:utext="${authorizedUser.password}"></td>
+<!--                    <div class="tab-pane fade pl-3" style="height: 700px;" id="user_panel" role="tabpanel"-->
+<!--                     aria-labelledby="user_panel">-->
+<!--                        <h1>User information-page</h1>-->
+<!--                        <div class="pl-3 pt-1 d-flex border-top border-left border-right"><h4>About user</h4></div>-->
+<!--                        <div class="bg-white border p-3">-->
+<!--                            <table class="table table-striped border-top">-->
+<!--                                <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th>Username</th>-->
+<!--                                        <th>Surname</th>-->
+<!--                                    </tr>-->
+<!--                                </thead>-->
+<!--                                <tbody>-->
+<!--                                    <tr th:object="${authorizedUser}">-->
+<!--                                        <td th:utext="${authorizedUser.username}"></td>-->
+<!--                                        <td th:utext="${authorizedUser.password}"></td>-->
 
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+<!--                                    </tr>-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
